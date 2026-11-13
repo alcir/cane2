@@ -1,0 +1,36 @@
+name: Run CANE-2 Tests
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout your code repository
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Set up Python (since CANE-2 is primarily Python-based)
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.9"
+
+    # 3. Install dependencies (e.g., pygame or anything required by your test scripts)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pygame
+        # If you have a requirements.txt, uncomment the next line:
+        # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    # 4. Grant execution permissions to the script and run it
+    - name: Run test_all.sh script
+      run: |
+        chmod +x tests/run_all.sh
+        ./tests/run_all.sh
